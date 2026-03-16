@@ -1,0 +1,67 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container container-md">
+    <div class="section-header animate-fade-up">
+      <span class="section-tag"><%= t.contact_tag %></span>
+      <h1><%= t.contact_title %></h1>
+      <p><%= t.contact_subtitle %></p>
+    </div>
+
+    <div class="contact-grid mt-2">
+      <div class="contact-info animate-fade-up delay-100">
+        <div class="contact-card">
+          <div class="contact-icon"><i data-lucide="mail"></i></div>
+          <h3><%= t.contact_email %></h3>
+          <p>hello@rescuenet.org</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon"><i data-lucide="phone"></i></div>
+          <h3><%= t.contact_phone %></h3>
+          <p>+91 98765 43210</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon"><i data-lucide="map-pin"></i></div>
+          <h3><%= t.contact_location %></h3>
+          <p>New Delhi, India</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon"><i data-lucide="clock"></i></div>
+          <h3><%= t.contact_response %></h3>
+          <p><%= t.contact_response_val %></p>
+        </div>
+      </div>
+
+      <div class="report-form animate-fade-up delay-200">
+        <form action="/contact" method="POST">
+          <div class="form-group">
+            <label class="form-label"><%= t.contact_name %></label>
+            <div class="input-icon-wrapper">
+              <i data-lucide="user" class="input-icon"></i>
+              <input type="text" name="name" class="form-input form-input-icon" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label"><%= t.contact_email_label %></label>
+            <div class="input-icon-wrapper">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input type="email" name="email" class="form-input form-input-icon" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label"><%= t.contact_message %></label>
+            <textarea name="message" class="form-input form-textarea" placeholder="<%= t.contact_message_placeholder %>" required></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">
+            <i data-lucide="send"></i> <%= t.contact_send %>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

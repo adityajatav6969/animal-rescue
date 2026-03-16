@@ -1,0 +1,108 @@
+<%- include('../partials/header') %>
+
+<section class="admin-section">
+  <div class="container">
+    <!-- Admin Nav -->
+    <div class="admin-nav animate-fade-up">
+      <h1 class="admin-title">📊 Dashboard</h1>
+      <div class="admin-nav-links">
+        <a href="/admin/dashboard" class="admin-tab active">Dashboard</a>
+        <a href="/admin/reports" class="admin-tab">Reports</a>
+        <a href="/admin/map" class="admin-tab">Map</a>
+        <a href="/admin/logout" class="admin-tab admin-tab-logout">Logout</a>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="admin-stats-grid animate-fade-up delay-100">
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon total"><i data-lucide="file-text"></i></div>
+        <div class="admin-stat-info">
+          <div class="admin-stat-number"><%= stats.total %></div>
+          <div class="admin-stat-label">Total Reports</div>
+        </div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon pending"><i data-lucide="clock"></i></div>
+        <div class="admin-stat-info">
+          <div class="admin-stat-number"><%= stats.pending %></div>
+          <div class="admin-stat-label">Pending</div>
+        </div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon in-progress"><i data-lucide="loader"></i></div>
+        <div class="admin-stat-info">
+          <div class="admin-stat-number"><%= stats.inProgress %></div>
+          <div class="admin-stat-label">In Progress</div>
+        </div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon rescued"><i data-lucide="heart"></i></div>
+        <div class="admin-stat-info">
+          <div class="admin-stat-number"><%= stats.rescued %></div>
+          <div class="admin-stat-label">Rescued</div>
+        </div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon urgent"><i data-lucide="alert-triangle"></i></div>
+        <div class="admin-stat-info">
+          <div class="admin-stat-number"><%= stats.urgent %></div>
+          <div class="admin-stat-label">Urgent</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Reports -->
+    <div class="admin-section-card animate-fade-up delay-200">
+      <div class="admin-section-header">
+        <h2>Recent Reports</h2>
+        <a href="/admin/reports" class="btn btn-outline btn-sm">View All</a>
+      </div>
+
+      <% if (recentReports.length === 0) { %>
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <p>No reports yet. Reports submitted by users will appear here.</p>
+        </div>
+      <% } else { %>
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Animal</th>
+                <th>Type</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% recentReports.forEach(report => { %>
+                <tr>
+                  <td>
+                    <div class="table-animal">
+                      <% if (report.imageUrl) { %>
+                        <img src="<%= report.imageUrl %>" alt="" class="table-thumb" />
+                      <% } %>
+                      <span><%= report.animalName %></span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-type"><%= report.animalType %></span></td>
+                  <td><span class="badge badge-<%= report.priority %>"><%= report.priority %></span></td>
+                  <td><span class="badge badge-<%= report.status %>"><%= report.status %></span></td>
+                  <td class="text-muted"><%= report.createdAt.toLocaleDateString() %></td>
+                  <td>
+                    <a href="/admin/reports?search=<%= report.animalName %>" class="btn btn-sm btn-outline">View</a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

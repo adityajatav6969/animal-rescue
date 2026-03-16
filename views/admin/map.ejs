@@ -1,0 +1,47 @@
+<%- include('../partials/header') %>
+
+<section class="admin-section">
+  <div class="container">
+    <!-- Admin Nav -->
+    <div class="admin-nav animate-fade-up">
+      <h1 class="admin-title">🗺️ Rescue Map</h1>
+      <div class="admin-nav-links">
+        <a href="/admin/dashboard" class="admin-tab">Dashboard</a>
+        <a href="/admin/reports" class="admin-tab">Reports</a>
+        <a href="/admin/map" class="admin-tab active">Map</a>
+        <a href="/admin/logout" class="admin-tab admin-tab-logout">Logout</a>
+      </div>
+    </div>
+
+    <!-- Map Container -->
+    <div class="map-container animate-fade-up delay-100">
+      <div id="rescueMap" class="rescue-map"></div>
+    </div>
+
+    <!-- Map Legend -->
+    <div class="map-legend animate-fade-up delay-200">
+      <h4>Legend</h4>
+      <div class="legend-items">
+        <div class="legend-item">
+          <span class="legend-dot pending"></span> Pending
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot in-progress"></span> In Progress
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot rescued"></span> Rescued
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot urgent"></span> Urgent
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="/js/map.js"></script>
+
+<%- include('../partials/footer') %>

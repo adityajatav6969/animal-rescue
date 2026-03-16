@@ -1,0 +1,155 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container container-md">
+    <div class="section-header animate-fade-up">
+      <span class="section-tag"><%= t.report_tag %></span>
+      <h1><%= t.report_title %></h1>
+      <p><%= t.report_subtitle %></p>
+    </div>
+
+    <!-- MAIN FORM -->
+    <div class="report-form animate-fade-up delay-100">
+      <form action="/report" method="POST" enctype="multipart/form-data">
+        
+        <!-- Grid: Name and Type -->
+        <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          
+          <!-- Name / Identifier -->
+          <div class="form-group">
+            <label for="animalName" class="form-label"><%= t.form_name %></label>
+            <div class="input-icon-wrapper">
+              <i data-lucide="tag" class="input-icon"></i>
+              <input type="text" id="animalName" name="animalName" class="form-input form-input-icon" placeholder="<%= t.form_name_placeholder %>" required>
+            </div>
+          </div>
+          
+          <!-- Animal Type -->
+          <div class="form-group">
+            <label for="animalType" class="form-label"><%= t.form_type %></label>
+            <div class="input-icon-wrapper">
+              <i data-lucide="list" class="input-icon"></i>
+              <select id="animalType" name="animalType" class="form-input form-input-icon" required>
+                <option value="" disabled selected><%= t.form_type_placeholder %></option>
+                <option value="dog"><%= t.form_type_dog %></option>
+                <option value="cat"><%= t.form_type_cat %></option>
+                <option value="cow"><%= t.form_type_cow %></option>
+                <option value="bird"><%= t.form_type_bird %></option>
+                <option value="other"><%= t.form_type_other %></option>
+              </select>
+            </div>
+          </div>
+          
+        </div>
+        
+        <!-- Description -->
+        <div class="form-group mt-2">
+          <label for="description" class="form-label"><%= t.form_desc %></label>
+          <textarea id="description" name="description" class="form-input form-textarea" placeholder="<%= t.form_desc_placeholder %>" required maxlength="1000"></textarea>
+          <span class="char-count"><span id="descCount">0</span>/1000</span>
+        </div>
+        
+        <!-- Priority Level -->
+        <div class="form-group mt-2">
+          <label class="form-label"><%= t.form_priority %></label>
+          <div class="radio-group">
+            
+            <label class="radio-card">
+              <input type="radio" name="priority" value="normal" checked>
+              <div class="radio-content">
+                <i data-lucide="clock" class="radio-icon text-info"></i>
+                <span class="radio-title"><%= t.form_normal %></span>
+                <span class="radio-desc"><%= t.form_normal_desc %></span>
+              </div>
+            </label>
+            
+            <label class="radio-card">
+              <input type="radio" name="priority" value="urgent">
+              <div class="radio-content">
+                <i data-lucide="alert-triangle" class="radio-icon text-danger"></i>
+                <span class="radio-title"><%= t.form_urgent %></span>
+                <span class="radio-desc"><%= t.form_urgent_desc %></span>
+              </div>
+            </label>
+            
+          </div>
+        </div>
+        
+        <!-- Photo Upload -->
+        <div class="form-group mt-2">
+          <label for="animalPhoto" class="form-label"><%= t.form_photo %></label>
+          <div class="upload-area" id="uploadArea">
+            <input type="file" id="animalPhoto" name="animalPhoto" class="upload-input" accept="image/jpeg, image/png, image/webp, image/gif" required>
+            
+            <div class="upload-placeholder" id="uploadPlaceholder">
+              <i data-lucide="image-plus" class="upload-icon"></i>
+              <p><strong><%= t.form_upload_text %></strong></p>
+              <p class="upload-hint"><%= t.form_upload_hint %></p>
+            </div>
+            
+            <div class="upload-preview" id="uploadPreview" style="display: none;">
+              <img id="previewImg" src="" alt="Preview">
+              <button type="button" class="btn btn-outline btn-sm" id="removePhoto">
+                <i data-lucide="x"></i> Remove
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Location Detection -->
+        <div class="form-group mt-2">
+          <label class="form-label"><%= t.form_location %></label>
+          
+          <button type="button" id="detectLocation" class="btn btn-outline btn-block">
+            <i data-lucide="crosshair"></i> <%= t.form_detect %>
+          </button>
+          
+          <div id="locationStatus" class="location-status" style="display: none;">
+            <i data-lucide="check-circle"></i>
+            <span id="locationText">Location captured successfully</span>
+          </div>
+          
+          <!-- Hidden fields for coordinates -->
+          <input type="hidden" id="latitude" name="latitude" required>
+          <input type="hidden" id="longitude" name="longitude" required>
+          
+          <p class="text-muted mt-2" style="font-size: 0.8rem; text-align: center;">
+            <i data-lucide="info" style="width: 14px; height: 14px; display: inline; vertical-align: middle;"></i> 
+            Location access is required to dispatch the rescue team to the exact spot.
+          </p>
+        </div>
+        
+        <!-- Contact Number (Optional) -->
+        <div class="form-group mt-3">
+          <label for="contactNumber" class="form-label">
+            <%= t.form_phone %> <span class="optional"><%= t.form_phone_optional %></span>
+          </label>
+          <div class="input-icon-wrapper">
+            <i data-lucide="phone" class="input-icon"></i>
+            <input type="tel" id="contactNumber" name="contactNumber" class="form-input form-input-icon" placeholder="e.g. +91 9876543210">
+          </div>
+        </div>
+        
+        <hr style="border-top: 1px solid var(--border); margin: 2rem 0;">
+        
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn">
+          <i data-lucide="send"></i> <%= t.form_submit %>
+        </button>
+        
+      </form>
+    </div>
+    
+  </div>
+</section>
+
+<script>
+  // Add loading state to form submission
+  document.querySelector('form').addEventListener('submit', function() {
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = '<span class="spinner" style="width:18px;height:18px"></span> Submitting...';
+    btn.classList.add('btn-loading');
+  });
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,79 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container container-md text-center">
+    <div class="success-card animate-fade-up delay-100">
+      <div class="success-icon text-success">
+        <i data-lucide="check-circle" style="width: 80px; height: 80px;"></i>
+      </div>
+      
+      <h1><%= t.success_title %></h1>
+      <p class="success-message"><%= t.success_message %></p>
+      
+      <div class="success-details animate-fade-up delay-200">
+        <div class="detail-row">
+          <span class="detail-label">Report ID</span>
+          <span class="detail-value" style="font-family: monospace; font-size: 1rem;"><%= report._id %></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Status</span>
+          <span class="detail-value">
+            <span class="badge badge-pending">Pending Review</span>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Animal</span>
+          <span class="detail-value"><%= report.animalName %> (<%= report.animalType %>)</span>
+        </div>
+        <% if (report.imageUrl) { %>
+        <div class="detail-row" style="flex-direction: column; align-items: flex-start;">
+          <span class="detail-label" style="margin-bottom: 0.5rem;">Photo</span>
+          <img src="<%= report.imageUrl %>" alt="Animal Photo" class="success-photo">
+        </div>
+        <% } %>
+      </div>
+      
+      <div class="success-actions animate-fade-up delay-300">
+        <a href="/report?lang=<%= lang %>" class="btn btn-outline">
+          <i data-lucide="plus"></i> <%= t.success_another %>
+        </a>
+        <a href="/?lang=<%= lang %>" class="btn btn-primary">
+          <i data-lucide="home"></i> <%= t.success_home %>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Confetti effect -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+  window.addEventListener('load', () => {
+    // Fire confetti on success page load
+    const duration = 3 * 1000;
+    const end = Date.now() + duration;
+
+    (function frame() {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ['#10b981', '#3b82f6', '#f59e0b']
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ['#10b981', '#3b82f6', '#f59e0b']
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    }());
+  });
+</script>
+
+<%- include('../partials/footer') %>

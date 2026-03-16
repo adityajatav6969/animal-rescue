@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animal Rescue Platform</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Map (Leaflet) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    // Prevent FOUC for dark mode
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Animated Mesh Background -->
+  <div class="mesh-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/?lang=<%= lang %>" class="nav-logo">
+        <i data-lucide="paw-print" class="logo-icon text-primary"></i>
+        <span>Rescue<span class="text-primary">Net</span></span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span class="hamburger"></span>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/?lang=<%= lang %>" class="<%= currentPath === '/' ? 'active' : '' %>"><%= t.nav_home %></a></li>
+        <li><a href="/how-it-works?lang=<%= lang %>" class="<%= currentPath === '/how-it-works' ? 'active' : '' %>"><%= t.nav_how %></a></li>
+        <li><a href="/about?lang=<%= lang %>" class="<%= currentPath === '/about' ? 'active' : '' %>"><%= t.nav_about %></a></li>
+        <li><a href="/contact?lang=<%= lang %>" class="<%= currentPath === '/contact' ? 'active' : '' %>"><%= t.nav_contact %></a></li>
+        
+        <% if (admin) { %>
+          <li><a href="/admin/dashboard" class="nav-admin-link">🛡️ <%= t.nav_dashboard %></a></li>
+        <% } %>
+
+        <li class="nav-cta">
+          <a href="/report?lang=<%= lang %>" class="btn btn-primary btn-sm">
+            <i data-lucide="alert-circle" style="width: 16px; height: 16px;"></i> 
+            <%= t.nav_report_btn %>
+          </a>
+        </li>
+
+        <!-- Language Toggle -->
+        <li>
+          <% const toggleLang = lang === 'en' ? 'hi' : 'en'; %>
+          <a href="<%= currentPath %>?lang=<%= toggleLang %>" class="lang-toggle" title="Change Language">
+            <%= t.lang_toggle %>
+          </a>
+        </li>
+
+        <!-- Theme Toggle -->
+        <li>
+          <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i data-lucide="moon" class="theme-icon-dark"></i>
+            <i data-lucide="sun" class="theme-icon-light"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-error">
+        <i data-lucide="alert-triangle"></i>
+        <span><%= error %></span>
+        <button class="alert-close" onclick="this.parentElement.style.display='none'"><i data-lucide="x"></i></button>
+      </div>
+    <% } %>
+    <% if (typeof success !== 'undefined' && success) { %>
+      <div class="alert alert-success">
+        <i data-lucide="check-circle"></i>
+        <span><%= success %></span>
+        <button class="alert-close" onclick="this.parentElement.style.display='none'"><i data-lucide="x"></i></button>
+      </div>
+    <% } %>

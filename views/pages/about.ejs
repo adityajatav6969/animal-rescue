@@ -1,0 +1,47 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container container-md">
+    <div class="section-header animate-fade-up">
+      <span class="section-tag"><%= t.about_tag %></span>
+      <h1><%= t.about_title %></h1>
+      <p><%= t.about_subtitle %></p>
+    </div>
+
+    <div class="about-grid mt-2">
+      <div class="about-content animate-fade-up delay-100">
+        <h2><%= t.about_who %></h2>
+        <p><%= t.about_who_p1 %></p>
+        <p><%= t.about_who_p2 %></p>
+        
+        <h2><%= t.about_vision %></h2>
+        <p><%= t.about_vision_p %></p>
+      </div>
+
+      <div class="about-values">
+        <div class="value-card animate-fade-up delay-100">
+          <div class="value-icon text-pink"><i data-lucide="heart"></i></div>
+          <h3><%= t.value1_title %></h3>
+          <p><%= t.value1_desc %></p>
+        </div>
+        <div class="value-card animate-fade-up delay-200">
+          <div class="value-icon text-primary"><i data-lucide="users"></i></div>
+          <h3><%= t.value2_title %></h3>
+          <p><%= t.value2_desc %></p>
+        </div>
+        <div class="value-card animate-fade-up delay-100">
+          <div class="value-icon text-accent"><i data-lucide="unlock"></i></div>
+          <h3><%= t.value3_title %></h3>
+          <p><%= t.value3_desc %></p>
+        </div>
+        <div class="value-card animate-fade-up delay-200">
+          <div class="value-icon text-info"><i data-lucide="cpu"></i></div>
+          <h3><%= t.value4_title %></h3>
+          <p><%= t.value4_desc %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

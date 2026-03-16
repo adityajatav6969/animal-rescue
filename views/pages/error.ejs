@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+
+<section class="page-section error-page text-center">
+  <div class="container container-sm animate-fade-up">
+    <div class="error-icon text-danger">
+      <i data-lucide="alert-triangle" style="width: 80px; height: 80px;"></i>
+    </div>
+    
+    <h1><%= typeof title !== 'undefined' ? title : 'Something went wrong' %></h1>
+    <p><%= typeof message !== 'undefined' ? message : 'An unexpected error occurred. Please try again later.' %></p>
+    
+    <a href="/?lang=<%= typeof lang !== 'undefined' ? lang : 'en' %>" class="btn btn-primary mt-2">
+      <i data-lucide="home"></i> Back to Home
+    </a>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

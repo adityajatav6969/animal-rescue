@@ -1,0 +1,75 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container container-md">
+    <div class="section-header animate-fade-up">
+      <span class="section-tag"><%= t.how_full_tag %></span>
+      <h1><%= t.how_full_title %></h1>
+      <p><%= t.how_full_subtitle %></p>
+    </div>
+
+    <div class="how-timeline mt-2">
+      <!-- Step 1 -->
+      <div class="timeline-item animate-fade-up delay-100">
+        <div class="timeline-number">1</div>
+        <div class="timeline-content">
+          <h3><%= t.how_step1 %></h3>
+          <p><%= t.how_step1_desc %></p>
+        </div>
+      </div>
+      
+      <!-- Step 2 -->
+      <div class="timeline-item animate-fade-up delay-200">
+        <div class="timeline-number">2</div>
+        <div class="timeline-content">
+          <h3><%= t.how_step2 %></h3>
+          <p><%= t.how_step2_desc %></p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="timeline-item animate-fade-up delay-300">
+        <div class="timeline-number">3</div>
+        <div class="timeline-content">
+          <h3><%= t.how_step3 %></h3>
+          <p><%= t.how_step3_desc %></p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="timeline-item animate-fade-up delay-100">
+        <div class="timeline-number">4</div>
+        <div class="timeline-content">
+          <h3><%= t.how_step4 %></h3>
+          <p><%= t.how_step4_desc %></p>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="timeline-item animate-fade-up delay-200">
+        <div class="timeline-number">5</div>
+        <div class="timeline-content">
+          <h3><%= t.how_step5 %></h3>
+          <p><%= t.how_step5_desc %></p>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="timeline-item animate-fade-up delay-300">
+        <div class="timeline-number">6</div>
+        <div class="timeline-content">
+          <h3><%= t.how_step6 %></h3>
+          <p><%= t.how_step6_desc %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-3 animate-fade-up delay-100">
+      <a href="/report?lang=<%= lang %>" class="btn btn-primary btn-lg">
+        <i data-lucide="alert-triangle"></i> <%= t.how_cta %>
+      </a>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container container-xs">
+    <div class="login-card animate-fade-up">
+      <div class="login-header">
+        <span class="login-icon">🔒</span>
+        <h1>Admin Login</h1>
+        <p>Sign in to manage rescue reports</p>
+      </div>
+
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-error alert-compact">
+          <i data-lucide="alert-circle"></i> <%= error %>
+        </div>
+      <% } %>
+
+      <form action="/admin/login" method="POST" class="login-form">
+        <div class="form-group">
+          <label for="username" class="form-label">Username</label>
+          <div class="input-icon-wrapper">
+            <i data-lucide="user" class="input-icon"></i>
+            <input type="text" id="username" name="username" class="form-input form-input-icon"
+                   placeholder="Enter username" required autofocus />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-icon-wrapper">
+            <i data-lucide="lock" class="input-icon"></i>
+            <input type="password" id="password" name="password" class="form-input form-input-icon"
+                   placeholder="Enter password" required />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">
+          <i data-lucide="log-in"></i>
+          Sign In
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <a href="/">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

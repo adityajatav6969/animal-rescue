@@ -1,0 +1,141 @@
+<%- include('../partials/header') %>
+
+<section class="admin-section">
+  <div class="container">
+    <!-- Admin Nav -->
+    <div class="admin-nav animate-fade-up">
+      <h1 class="admin-title">📋 Manage Reports</h1>
+      <div class="admin-nav-links">
+        <a href="/admin/dashboard" class="admin-tab">Dashboard</a>
+        <a href="/admin/reports" class="admin-tab active">Reports</a>
+        <a href="/admin/map" class="admin-tab">Map</a>
+        <a href="/admin/logout" class="admin-tab admin-tab-logout">Logout</a>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="admin-filters animate-fade-up delay-100">
+      <form action="/admin/reports" method="GET" class="filter-form">
+        <div class="filter-group">
+          <div class="input-icon-wrapper">
+            <i data-lucide="search" class="input-icon"></i>
+            <input type="text" name="search" class="form-input form-input-icon"
+                   placeholder="Search by name..." value="<%= filters.search %>" />
+          </div>
+        </div>
+        <div class="filter-group">
+          <select name="type" class="form-input">
+            <option value="all" <%= filters.type === 'all' ? 'selected' : '' %>>All Types</option>
+            <option value="dog" <%= filters.type === 'dog' ? 'selected' : '' %>>🐕 Dog</option>
+            <option value="cat" <%= filters.type === 'cat' ? 'selected' : '' %>>🐈 Cat</option>
+            <option value="cow" <%= filters.type === 'cow' ? 'selected' : '' %>>🐄 Cow</option>
+            <option value="bird" <%= filters.type === 'bird' ? 'selected' : '' %>>🐦 Bird</option>
+            <option value="other" <%= filters.type === 'other' ? 'selected' : '' %>>🐾 Other</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <select name="status" class="form-input">
+            <option value="all" <%= filters.status === 'all' ? 'selected' : '' %>>All Status</option>
+            <option value="pending" <%= filters.status === 'pending' ? 'selected' : '' %>>Pending</option>
+            <option value="in-progress" <%= filters.status === 'in-progress' ? 'selected' : '' %>>In Progress</option>
+            <option value="rescued" <%= filters.status === 'rescued' ? 'selected' : '' %>>Rescued</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">
+          <i data-lucide="filter"></i> Filter
+        </button>
+        <a href="/admin/reports" class="btn btn-outline btn-sm">Clear</a>
+      </form>
+    </div>
+
+    <!-- Report Count -->
+    <div class="admin-result-info animate-fade-up delay-100">
+      <p>Showing <strong><%= reports.length %></strong> of <strong><%= pagination.total %></strong> reports</p>
+    </div>
+
+    <!-- Reports Grid -->
+    <% if (reports.length === 0) { %>
+      <div class="empty-state animate-fade-up">
+        <div class="empty-icon">📭</div>
+        <h3>No reports found</h3>
+        <p>Try adjusting your filters or search query.</p>
+      </div>
+    <% } else { %>
+      <div class="reports-grid animate-fade-up delay-200">
+        <% reports.forEach(report => { %>
+          <div class="report-card" id="report-<%= report._id %>">
+            <% if (report.imageUrl) { %>
+              <div class="report-card-image">
+                <img src="<%= report.imageUrl %>" alt="<%= report.animalName %>" loading="lazy" />
+                <% if (report.priority === 'urgent') { %>
+                  <span class="report-urgent-badge">🚨 URGENT</span>
+                <% } %>
+              </div>
+            <% } else { %>
+              <div class="report-card-image report-card-no-image">
+                <span>🐾</span>
+                <% if (report.priority === 'urgent') { %>
+                  <span class="report-urgent-badge">🚨 URGENT</span>
+                <% } %>
+              </div>
+            <% } %>
+
+            <div class="report-card-body">
+              <div class="report-card-header">
+                <h3><%= report.animalName %></h3>
+                <span class="badge badge-<%= report.status %>"><%= report.status %></span>
+              </div>
+
+              <div class="report-card-meta">
+                <span class="badge badge-type"><%= report.animalType %></span>
+                <span class="text-muted"><%= report.createdAt.toLocaleDateString() %></span>
+              </div>
+
+              <p class="report-card-desc"><%= report.description.substring(0, 120) %><%= report.description.length > 120 ? '...' : '' %></p>
+
+              <% if (report.contactNumber) { %>
+                <p class="report-card-contact">📞 <%= report.contactNumber %></p>
+              <% } %>
+
+              <% if (report.latitude && report.longitude) { %>
+                <p class="report-card-location">📍 <%= report.latitude.toFixed(4) %>, <%= report.longitude.toFixed(4) %></p>
+              <% } %>
+
+              <!-- Status Update -->
+              <div class="report-card-actions">
+                <form action="/admin/reports/<%= report._id %>/status" method="POST" class="status-form">
+                  <select name="status" class="form-input form-input-sm">
+                    <option value="pending" <%= report.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                    <option value="in-progress" <%= report.status === 'in-progress' ? 'selected' : '' %>>In Progress</option>
+                    <option value="rescued" <%= report.status === 'rescued' ? 'selected' : '' %>>Rescued</option>
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                </form>
+                <form action="/admin/reports/<%= report._id %>/delete" method="POST"
+                      onsubmit="return confirm('Are you sure you want to delete this report?')">
+                  <button type="submit" class="btn btn-sm btn-danger">
+                    <i data-lucide="trash-2"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Pagination -->
+      <% if (pagination.pages > 1) { %>
+        <div class="pagination animate-fade-up">
+          <% for (let p = 1; p <= pagination.pages; p++) { %>
+            <a href="/admin/reports?page=<%= p %>&search=<%= filters.search %>&status=<%= filters.status %>&type=<%= filters.type %>"
+               class="pagination-link <%= p === pagination.page ? 'active' : '' %>">
+              <%= p %>
+            </a>
+          <% } %>
+        </div>
+      <% } %>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
