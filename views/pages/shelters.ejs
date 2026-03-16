@@ -1,0 +1,78 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container">
+    <div class="feature-hero animate-fade-up">
+      <span class="section-tag">🏠 Shelters</span>
+      <h1>Animal <span class="gradient-text">Shelter Directory</span></h1>
+      <p>Find nearby animal shelters and sanctuaries that provide care and refuge.</p>
+    </div>
+
+    <!-- Search -->
+    <div class="feature-filters animate-fade-up delay-100">
+      <form action="/shelters" method="GET" style="display:flex;gap:0.5rem;align-items:center;">
+        <input type="text" name="city" class="form-input form-input-sm" placeholder="Search by city..." value="<%= currentCity %>" style="width:220px;" />
+        <button type="submit" class="btn btn-primary btn-sm"><i data-lucide="search"></i> Search</button>
+        <% if (currentCity) { %><a href="/shelters" class="btn btn-outline btn-sm">Clear</a><% } %>
+      </form>
+    </div>
+
+    <!-- Map -->
+    <div class="map-container animate-fade-up delay-200" style="margin-bottom:2rem;">
+      <div id="shelterMap" class="rescue-map" style="height:400px;"></div>
+    </div>
+
+    <% if (shelters.length === 0) { %>
+      <div class="empty-state animate-fade-up delay-200">
+        <div class="empty-icon">🏠</div>
+        <p>No shelters found. Try a different search or check back later.</p>
+      </div>
+    <% } else { %>
+      <div class="feature-cards-grid animate-fade-up delay-200">
+        <% shelters.forEach(shelter => { %>
+          <div class="feature-card">
+            <div class="feature-card-body">
+              <h3><i data-lucide="home" style="width:18px;height:18px;display:inline;color:var(--primary);"></i> <%= shelter.name %></h3>
+              <p><%= shelter.address || shelter.city %></p>
+              <div style="display:flex;flex-direction:column;gap:0.25rem;margin-top:0.5rem;">
+                <% if (shelter.phone) { %>
+                  <span class="text-muted" style="font-size:0.85rem;"><i data-lucide="phone" style="width:14px;height:14px;display:inline"></i> <%= shelter.phone %></span>
+                <% } %>
+                <% if (shelter.email) { %>
+                  <span class="text-muted" style="font-size:0.85rem;"><i data-lucide="mail" style="width:14px;height:14px;display:inline"></i> <%= shelter.email %></span>
+                <% } %>
+                <% if (shelter.website) { %>
+                  <a href="<%= shelter.website %>" target="_blank" class="text-muted" style="font-size:0.85rem;"><i data-lucide="globe" style="width:14px;height:14px;display:inline"></i> Website</a>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const map = L.map('shelterMap').setView([20.5937, 78.9629], 5);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  fetch('/api/shelters')
+    .then(r => r.json())
+    .then(res => {
+      if (res.success) {
+        res.data.forEach(s => {
+          L.marker([s.latitude, s.longitude])
+            .addTo(map)
+            .bindPopup('<strong>' + s.name + '</strong><br>' + (s.address || s.city) + (s.phone ? '<br>📞 ' + s.phone : ''));
+        });
+      }
+    });
+});
+</script>
+
+<%- include('../partials/footer') %>

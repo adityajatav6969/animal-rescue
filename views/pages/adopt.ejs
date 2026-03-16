@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container">
+    <div class="feature-hero animate-fade-up">
+      <span class="section-tag">🏠 Adopt</span>
+      <h1>Give an Animal a <span class="gradient-text">Forever Home</span></h1>
+      <p>Browse animals looking for loving families. Every adoption saves a life.</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="feature-filters animate-fade-up delay-100">
+      <a href="/adopt" class="filter-btn <%= currentType === 'all' ? 'active' : '' %>">All</a>
+      <a href="/adopt?type=dog" class="filter-btn <%= currentType === 'dog' ? 'active' : '' %>">🐕 Dogs</a>
+      <a href="/adopt?type=cat" class="filter-btn <%= currentType === 'cat' ? 'active' : '' %>">🐈 Cats</a>
+      <a href="/adopt?type=bird" class="filter-btn <%= currentType === 'bird' ? 'active' : '' %>">🐦 Birds</a>
+      <a href="/adopt?type=other" class="filter-btn <%= currentType === 'other' ? 'active' : '' %>">🐾 Other</a>
+    </div>
+
+    <% if (animals.length === 0) { %>
+      <div class="empty-state animate-fade-up delay-200">
+        <div class="empty-icon">🐾</div>
+        <p>No animals available for adoption at the moment. Check back later!</p>
+      </div>
+    <% } else { %>
+      <div class="feature-cards-grid animate-fade-up delay-200">
+        <% animals.forEach(animal => { %>
+          <div class="feature-card">
+            <div class="feature-card-img">
+              <% if (animal.photo) { %>
+                <img src="<%= animal.photo %>" alt="<%= animal.animalName %>" />
+              <% } else { %>
+                <% if (animal.animalType === 'dog') { %>🐕<% } else if (animal.animalType === 'cat') { %>🐈<% } else if (animal.animalType === 'bird') { %>🐦<% } else { %>🐾<% } %>
+              <% } %>
+            </div>
+            <div class="feature-card-body">
+              <div class="feature-card-meta">
+                <span class="badge badge-type"><%= animal.animalType %></span>
+                <span class="badge badge-<%= animal.healthStatus %>"><%= animal.healthStatus %></span>
+              </div>
+              <h3><%= animal.animalName %></h3>
+              <% if (animal.age) { %><p style="margin-bottom:0.25rem;"><strong>Age:</strong> <%= animal.age %></p><% } %>
+              <% if (animal.location) { %><p style="font-size:0.8rem;color:var(--text-muted)"><i data-lucide="map-pin" style="width:14px;height:14px;display:inline"></i> <%= animal.location %></p><% } %>
+              <p><%= animal.description ? animal.description.substring(0, 100) + '...' : 'A lovely animal waiting for a home.' %></p>
+              <a href="/adopt/<%= animal._id %>" class="btn btn-primary btn-sm" style="margin-top:0.5rem;">
+                <i data-lucide="heart"></i> Adopt Me
+              </a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

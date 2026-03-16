@@ -1,0 +1,36 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container container-md">
+    <div class="animate-fade-up" style="margin-bottom:2rem;">
+      <a href="/rescue-stories" class="btn btn-outline btn-sm"><i data-lucide="arrow-left"></i> Back to Stories</a>
+    </div>
+    <div class="feature-form animate-fade-up delay-100" style="max-width:100%;">
+      <% if (story.beforePhoto || story.afterPhoto) { %>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+          <% if (story.beforePhoto) { %>
+            <div>
+              <p class="text-muted" style="font-size:0.8rem;margin-bottom:0.5rem;">Before Rescue</p>
+              <img src="<%= story.beforePhoto %>" alt="Before" style="width:100%;border-radius:var(--radius);object-fit:cover;max-height:300px;" />
+            </div>
+          <% } %>
+          <% if (story.afterPhoto) { %>
+            <div>
+              <p class="text-muted" style="font-size:0.8rem;margin-bottom:0.5rem;">After Rescue</p>
+              <img src="<%= story.afterPhoto %>" alt="After" style="width:100%;border-radius:var(--radius);object-fit:cover;max-height:300px;" />
+            </div>
+          <% } %>
+        </div>
+      <% } %>
+      <div class="feature-card-meta" style="margin-bottom:1rem;">
+        <span class="badge badge-type"><%= story.animalType %></span>
+        <% if (story.location) { %><span class="text-muted"><i data-lucide="map-pin" style="width:14px;height:14px;display:inline"></i> <%= story.location %></span><% } %>
+        <span class="text-muted"><%= new Date(story.rescueDate).toLocaleDateString() %></span>
+      </div>
+      <h1 style="font-size:1.75rem;margin-bottom:1rem;"><%= story.title %></h1>
+      <p style="color:var(--text-secondary);line-height:1.8;font-size:1rem;"><%= story.description %></p>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,331 @@
+<%- include('../partials/header') %>
+
+<link rel="stylesheet" href="/css/statistics.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- ── DASHBOARD SECTION ─────────────────────── -->
+<section class="page-section admin-section dashboard-section">
+  <div class="container container-lg">
+    <div class="admin-nav animate-fade-up">
+      <div>
+        <h1 class="admin-title">Statistics Dashboard</h1>
+        <p class="text-secondary mt-1">Advanced Overview of Rescue Operations</p>
+      </div>
+      <div class="admin-nav-links">
+        <a href="/admin/dashboard" class="btn btn-outline btn-sm">
+          <i data-lucide="arrow-left"></i> Back to Admin
+        </a>
+        <a href="/report?lang=<%= lang %>" class="btn btn-primary btn-sm">
+          <i data-lucide="plus"></i> New Report
+        </a>
+      </div>
+    </div>
+
+    <!-- ── METRICS GRID ──────────────────────────── -->
+    <div class="admin-stats-grid mb-4">
+      <!-- Total Reports -->
+      <div class="admin-stat-card dashboard-metric animate-fade-up delay-100">
+        <div class="admin-stat-icon total scale-icon">
+          <i data-lucide="files"></i>
+        </div>
+        <div>
+          <div class="admin-stat-number counter-value" data-target="<%= data.totalReports %>">0</div>
+          <div class="admin-stat-label">Total Reports</div>
+        </div>
+        <div class="metric-bg-shape bg-shape-1"></div>
+      </div>
+
+      <!-- Rescued Animals -->
+      <div class="admin-stat-card dashboard-metric animate-fade-up delay-200">
+        <div class="admin-stat-icon rescued scale-icon">
+          <i data-lucide="heart"></i>
+        </div>
+        <div>
+          <div class="admin-stat-number counter-value" data-target="<%= data.totalRescued %>">0</div>
+          <div class="admin-stat-label">Animals Rescued</div>
+        </div>
+        <div class="metric-bg-shape bg-shape-2"></div>
+      </div>
+
+      <!-- Success Rate -->
+      <div class="admin-stat-card dashboard-metric animate-fade-up delay-300">
+        <div class="admin-stat-icon pending scale-icon">
+          <i data-lucide="percent"></i>
+        </div>
+        <div>
+          <div class="admin-stat-number counter-value" data-target="<%= data.successRate %>" data-suffix="%">0</div>
+          <div class="admin-stat-label">Success Rate</div>
+        </div>
+        <div class="metric-bg-shape bg-shape-3"></div>
+      </div>
+
+      <!-- Rescues This Month -->
+      <div class="admin-stat-card dashboard-metric animate-fade-up delay-300">
+        <div class="admin-stat-icon in-progress scale-icon">
+          <i data-lucide="calendar"></i>
+        </div>
+        <div>
+          <div class="admin-stat-number counter-value" data-target="<%= data.rescuedThisMonth %>">0</div>
+          <div class="admin-stat-label">Rescues This Month</div>
+        </div>
+        <div class="metric-bg-shape bg-shape-4"></div>
+      </div>
+
+      <!-- Most Common -->
+      <div class="admin-stat-card dashboard-metric animate-fade-up delay-300">
+        <div class="admin-stat-icon urgent scale-icon">
+          <i data-lucide="pie-chart"></i>
+        </div>
+        <div>
+          <div class="admin-stat-number"><%= data.commonAnimalType %></div>
+          <div class="admin-stat-label">Most Common</div>
+        </div>
+        <div class="metric-bg-shape bg-shape-5"></div>
+      </div>
+    </div>
+
+    <!-- ── CHARTS GRID ───────────────────────────── -->
+    <div class="charts-grid mt-3">
+      
+      <!-- Rescue Trend -->
+      <div class="chart-card animate-fade-up delay-100">
+        <div class="chart-header">
+          <h3><i data-lucide="trending-up"></i> Rescue Trend (30 Days)</h3>
+        </div>
+        <div class="chart-body">
+          <div class="skeleton-loader" id="skel-trend"></div>
+          <canvas id="rescueTrendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Monthly Rescues area chart -->
+      <div class="chart-card animate-fade-up delay-200">
+        <div class="chart-header">
+          <h3><i data-lucide="bar-chart-2"></i> Monthly Rescue Activity</h3>
+        </div>
+        <div class="chart-body">
+          <div class="skeleton-loader" id="skel-monthly"></div>
+          <canvas id="monthlyRescuesChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Animal Type Distribution -->
+      <div class="chart-card animate-fade-up delay-300">
+        <div class="chart-header">
+          <h3><i data-lucide="pie-chart"></i> Animal Distribution</h3>
+        </div>
+        <div class="chart-body chart-body-pie">
+          <div class="skeleton-loader" id="skel-dist"></div>
+          <canvas id="animalDistributionChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Rescue Status -->
+      <div class="chart-card animate-fade-up delay-300">
+        <div class="chart-header">
+          <h3><i data-lucide="activity"></i> Status Overview</h3>
+        </div>
+        <div class="chart-body">
+          <div class="skeleton-loader" id="skel-status"></div>
+          <canvas id="rescueStatusChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Data payload for JS -->
+<script id="chart-data" type="application/json">
+  <%- JSON.stringify(data.charts) %>
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // ── 1. Counter Animation ────────────────────────────────
+    const counters = document.querySelectorAll('.counter-value');
+    counters.forEach(counter => {
+      const target = parseFloat(counter.getAttribute('data-target'));
+      const suffix = counter.getAttribute('data-suffix') || '';
+      const duration = 2000;
+      const step = target / (duration / 16);
+      let current = 0;
+
+      const updateCounter = () => {
+        current += step;
+        if (current < target) {
+          counter.innerText = (current % 1 === 0 ? Math.floor(current) : current.toFixed(1)) + suffix;
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.innerText = (target % 1 === 0 ? target : target.toFixed(1)) + suffix;
+        }
+      };
+      updateCounter();
+    });
+
+    // ── 2. Chart Initialization ─────────────────────────────
+    // Parse the data encoded from backend
+    const rawData = document.getElementById('chart-data').textContent;
+    const chartsData = JSON.parse(rawData);
+
+    // CSS variables mapped for charts
+    const colors = {
+      primary: '#10b981',
+      primaryLight: '#34d399',
+      accent: '#f59e0b',
+      purple: '#8b5cf6',
+      pink: '#ec4899',
+      blue: '#3b82f6',
+      text: document.documentElement.getAttribute('data-theme') === 'dark' ? '#f1f5f9' : '#0f172a',
+      grid: document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'
+    };
+    
+    const pieColors = [
+      colors.primary, colors.purple, colors.accent, colors.pink, colors.blue, '#14b8a6', '#f43f5e'
+    ];
+
+    Chart.defaults.color = colors.text;
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.plugins.tooltip.backgroundColor = document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(15,23,42,0.9)' : 'rgba(255,255,255,0.9)';
+    Chart.defaults.plugins.tooltip.titleColor = document.documentElement.getAttribute('data-theme') === 'dark' ? '#fff' : '#0f172a';
+    Chart.defaults.plugins.tooltip.bodyColor = document.documentElement.getAttribute('data-theme') === 'dark' ? '#cbd5e1' : '#475569';
+    Chart.defaults.plugins.tooltip.borderColor = document.documentElement.getAttribute('data-theme') === 'dark' ? '#334155' : '#e2e8f0';
+    Chart.defaults.plugins.tooltip.borderWidth = 1;
+
+    const commonOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        duration: 2000,
+        easing: 'easeOutQuart'
+      },
+      scales: {
+        x: { grid: { color: colors.grid, drawBorder: false } },
+        y: { 
+          grid: { color: colors.grid, drawBorder: false },
+          beginAtZero: true 
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    };
+
+    // Remove skeletons after brief delay to simulate loading complex data
+    setTimeout(() => {
+      document.querySelectorAll('.skeleton-loader').forEach(el => el.remove());
+      
+      // 1. Rescue Trend (Line)
+      const trendData = JSON.parse(chartsData.rescueTrend);
+      new Chart(document.getElementById('rescueTrendChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: trendData.labels,
+          datasets: [{
+            label: 'Reports',
+            data: trendData.data,
+            borderColor: colors.primary,
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointBackgroundColor: colors.bg,
+            pointBorderColor: colors.primary,
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          ...commonOptions,
+          plugins: {
+            legend: { display: false },
+            tooltip: { mode: 'index', intersect: false }
+          }
+        }
+      });
+
+      // 2. Animal Distribution (Doughnut)
+      const distData = JSON.parse(chartsData.animalDistribution);
+      new Chart(document.getElementById('animalDistributionChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels: distData.labels,
+          datasets: [{
+            data: distData.data,
+            backgroundColor: pieColors.slice(0, distData.data.length),
+            borderWidth: 0,
+            hoverOffset: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%',
+          animation: { animateScale: true, animateRotate: true, duration: 2000 },
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { padding: 20, usePointStyle: true, pointStyle: 'circle' }
+            }
+          }
+        }
+      });
+
+      // 3. Rescue Status (Bar)
+      const statusData = JSON.parse(chartsData.rescueStatus);
+      const statusColors = statusData.labels.map(l => {
+        if(l.toLowerCase().includes('pending')) return colors.accent;
+        if(l.toLowerCase().includes('progress')) return colors.blue;
+        return colors.primary;
+      });
+      new Chart(document.getElementById('rescueStatusChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: statusData.labels,
+          datasets: [{
+            label: 'Reports Count',
+            data: statusData.data,
+            backgroundColor: statusColors,
+            borderRadius: 8,
+            borderSkipped: false,
+            barPercentage: 0.6
+          }]
+        },
+        options: {
+          ...commonOptions,
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // 4. Monthly Rescues (Area)
+      const monthlyData = JSON.parse(chartsData.monthlyRescues);
+      new Chart(document.getElementById('monthlyRescuesChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: monthlyData.labels,
+          datasets: [{
+            label: 'Rescued Animals',
+            data: monthlyData.data,
+            borderColor: colors.purple,
+            backgroundColor: 'rgba(139, 92, 246, 0.2)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 0,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          ...commonOptions,
+          plugins: { tooltip: { mode: 'index', intersect: false } }
+        }
+      });
+
+    }, 300); // Small delay to let user see skeleton
+
+  });
+</script>
+
+<%- include('../partials/footer') %>

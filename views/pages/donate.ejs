@@ -1,0 +1,95 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container">
+    <div class="feature-hero animate-fade-up">
+      <span class="section-tag">💛 Support</span>
+      <h1>Support Our <span class="gradient-text">Rescue Mission</span></h1>
+      <p>Your donation directly funds rescue operations, medical care, and shelter for animals in need.</p>
+    </div>
+
+    <!-- Impact Stats -->
+    <div class="stats-grid animate-fade-up delay-100" style="margin-bottom:3rem;">
+      <div class="stat-card">
+        <div class="stat-icon pending"><i data-lucide="indian-rupee"></i></div>
+        <div class="stat-number">₹<%= stats.totalDonations.toLocaleString() %></div>
+        <div class="stat-label">Total Donations</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon rescued"><i data-lucide="heart"></i></div>
+        <div class="stat-number"><%= stats.totalRescued %></div>
+        <div class="stat-label">Animals Rescued</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon active"><i data-lucide="users"></i></div>
+        <div class="stat-number"><%= stats.donorCount %></div>
+        <div class="stat-label">Generous Donors</div>
+      </div>
+    </div>
+
+    <!-- Donation Progress -->
+    <div class="animate-fade-up delay-200" style="max-width:700px;margin:0 auto 2rem;text-align:center;">
+      <p style="margin-bottom:0.5rem;font-weight:600;">Fundraising Goal: ₹1,00,000</p>
+      <div class="donation-progress">
+        <div class="donation-progress-bar" id="progressBar"></div>
+      </div>
+      <p class="text-muted">₹<%= stats.totalDonations.toLocaleString() %> raised</p>
+    </div>
+
+    <!-- Donation Form -->
+    <div class="feature-form animate-fade-up delay-300">
+      <h2><i data-lucide="gift"></i> Make a Donation</h2>
+      <form method="POST" action="/donate">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <input type="text" name="donorName" class="form-input" required placeholder="Full name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-input" placeholder="you@example.com" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Select Amount</label>
+          <div class="donation-tiers">
+            <button type="button" class="tier-btn" onclick="setAmount(100)">₹100<small>Feed 5 animals</small></button>
+            <button type="button" class="tier-btn" onclick="setAmount(500)">₹500<small>Medical care</small></button>
+            <button type="button" class="tier-btn" onclick="setAmount(1000)">₹1,000<small>Rescue operation</small></button>
+            <button type="button" class="tier-btn" onclick="document.getElementById('amountInput').focus()">Custom<small>Your amount</small></button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Amount (₹)</label>
+          <input type="number" name="amount" id="amountInput" class="form-input" required min="1" placeholder="Enter amount" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Message <span class="optional">(optional)</span></label>
+          <textarea name="message" class="form-input form-textarea" placeholder="Leave a supportive message..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">
+          <i data-lucide="heart"></i> Donate Now (Simulated)
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+function setAmount(val) {
+  document.getElementById('amountInput').value = val;
+  document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+  event.target.closest('.tier-btn').classList.add('active');
+}
+// Animate progress bar
+setTimeout(() => {
+  const pct = Math.min((<%= stats.totalDonations %> / 100000) * 100, 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+}, 500);
+</script>
+
+<%- include('../partials/footer') %>

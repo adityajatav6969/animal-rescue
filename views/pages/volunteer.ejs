@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container container-md">
+    <div class="feature-hero animate-fade-up">
+      <span class="section-tag">🤝 Join Us</span>
+      <h1>Become a <span class="gradient-text">Rescue Volunteer</span></h1>
+      <p>Join our network of dedicated animal rescuers and make a difference in the lives of animals in need.</p>
+    </div>
+
+    <div class="feature-form animate-fade-up delay-200">
+      <h2><i data-lucide="user-plus"></i> Registration Form</h2>
+      <form method="POST" action="/volunteer">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="name" class="form-input" required placeholder="Your full name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" name="phone" class="form-input" required placeholder="+91 XXXXX XXXXX" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-input" required placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input type="text" name="city" class="form-input" required placeholder="Your city" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Availability</label>
+          <select name="availability" class="form-input">
+            <option value="anytime">Anytime</option>
+            <option value="weekdays">Weekdays</option>
+            <option value="weekends">Weekends</option>
+            <option value="evenings">Evenings Only</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Experience <span class="optional">(optional)</span></label>
+          <textarea name="experience" class="form-input form-textarea" placeholder="Tell us about your animal rescue experience..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">
+          <i data-lucide="heart"></i> Register as Volunteer
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

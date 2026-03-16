@@ -1,0 +1,102 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container">
+    <div class="feature-hero animate-fade-up">
+      <span class="section-tag">🏥 Medical</span>
+      <h1>Animal <span class="gradient-text">Medical Records</span></h1>
+      <p>Track medical history and treatments for rescued animals.</p>
+    </div>
+
+    <!-- Search -->
+    <div class="feature-filters animate-fade-up delay-100">
+      <form action="/medical-records" method="GET" style="display:flex;gap:0.5rem;align-items:center;">
+        <input type="text" name="search" class="form-input form-input-sm" placeholder="Search by animal name or ID..." value="<%= search %>" style="width:280px;" />
+        <button type="submit" class="btn btn-primary btn-sm"><i data-lucide="search"></i> Search</button>
+      </form>
+    </div>
+
+    <!-- Add Record Form -->
+    <div class="feature-form animate-fade-up delay-200" style="margin-bottom:2rem;">
+      <h2><i data-lucide="plus-circle"></i> Add Medical Record</h2>
+      <form method="POST" action="/medical-records">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Animal ID</label>
+            <input type="text" name="animalId" class="form-input" required placeholder="e.g., DOG-001" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Animal Name</label>
+            <input type="text" name="animalName" class="form-input" placeholder="Animal name" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Treatment</label>
+            <input type="text" name="treatment" class="form-input" required placeholder="Treatment performed" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Medications</label>
+            <input type="text" name="medications" class="form-input" placeholder="Medications prescribed" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Vet Name</label>
+            <input type="text" name="vetName" class="form-input" placeholder="Veterinarian name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Treatment Date</label>
+            <input type="date" name="treatmentDate" class="form-input" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea name="notes" class="form-input form-textarea" placeholder="Additional notes..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i data-lucide="save"></i> Save Record
+        </button>
+      </form>
+    </div>
+
+    <!-- Records Table -->
+    <div class="animate-fade-up delay-300">
+      <% if (records.length === 0) { %>
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <p>No medical records found.</p>
+        </div>
+      <% } else { %>
+        <div style="overflow-x:auto;">
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th>Animal ID</th>
+                <th>Name</th>
+                <th>Treatment</th>
+                <th>Medications</th>
+                <th>Vet</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% records.forEach(r => { %>
+                <tr>
+                  <td><strong><%= r.animalId %></strong></td>
+                  <td><%= r.animalName || '—' %></td>
+                  <td><%= r.treatment %></td>
+                  <td><%= r.medications || '—' %></td>
+                  <td><%= r.vetName || '—' %></td>
+                  <td class="text-muted"><%= new Date(r.treatmentDate).toLocaleDateString() %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

@@ -20,6 +20,7 @@
   
   <!-- Styles -->
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/features.css">
   <script>
     // Prevent FOUC for dark mode
     const savedTheme = localStorage.getItem('theme');
@@ -53,10 +54,98 @@
 
       <ul class="nav-links" id="navLinks">
         <li><a href="/?lang=<%= lang %>" class="<%= currentPath === '/' ? 'active' : '' %>"><%= t.nav_home %></a></li>
-        <li><a href="/how-it-works?lang=<%= lang %>" class="<%= currentPath === '/how-it-works' ? 'active' : '' %>"><%= t.nav_how %></a></li>
-        <li><a href="/about?lang=<%= lang %>" class="<%= currentPath === '/about' ? 'active' : '' %>"><%= t.nav_about %></a></li>
-        <li><a href="/contact?lang=<%= lang %>" class="<%= currentPath === '/contact' ? 'active' : '' %>"><%= t.nav_contact %></a></li>
-        
+
+        <!-- Services Dropdown -->
+        <li class="nav-dropdown">
+          <a href="#" class="nav-dropdown-trigger <%= ['/emergency','/volunteer','/donate','/adopt'].includes(currentPath) ? 'active' : '' %>">
+            Services <i data-lucide="chevron-down" style="width:14px;height:14px;margin-left:2px;transition:transform 0.3s"></i>
+          </a>
+          <div class="mega-dropdown">
+            <div class="mega-dropdown-inner">
+              <div class="mega-col">
+                <h4 class="mega-col-title"><i data-lucide="zap"></i> Quick Actions</h4>
+                <a href="/emergency?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#ef4444,#f87171)"><i data-lucide="siren"></i></span>
+                  <div><strong>Emergency Rescue</strong><small>Report critically injured animals</small></div>
+                </a>
+                <a href="/volunteer?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)"><i data-lucide="hand-helping"></i></span>
+                  <div><strong>Become a Volunteer</strong><small>Join our rescue network</small></div>
+                </a>
+              </div>
+              <div class="mega-col">
+                <h4 class="mega-col-title"><i data-lucide="heart"></i> Support</h4>
+                <a href="/donate?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)"><i data-lucide="gift"></i></span>
+                  <div><strong>Donate</strong><small>Fund rescue operations</small></div>
+                </a>
+                <a href="/adopt?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#10b981,#34d399)"><i data-lucide="home"></i></span>
+                  <div><strong>Adopt an Animal</strong><small>Give a forever home</small></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Resources Dropdown -->
+        <li class="nav-dropdown">
+          <a href="#" class="nav-dropdown-trigger <%= ['/shelters','/medical-records','/helpline','/care-guide','/education'].includes(currentPath) ? 'active' : '' %>">
+            Resources <i data-lucide="chevron-down" style="width:14px;height:14px;margin-left:2px;transition:transform 0.3s"></i>
+          </a>
+          <div class="mega-dropdown">
+            <div class="mega-dropdown-inner">
+              <div class="mega-col">
+                <h4 class="mega-col-title"><i data-lucide="map-pin"></i> Find Help</h4>
+                <a href="/shelters?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#06b6d4,#22d3ee)"><i data-lucide="building-2"></i></span>
+                  <div><strong>Animal Shelters</strong><small>Find shelters near you</small></div>
+                </a>
+                <a href="/helpline?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#ec4899,#f472b6)"><i data-lucide="phone"></i></span>
+                  <div><strong>Helpline Numbers</strong><small>24/7 emergency contacts</small></div>
+                </a>
+                <a href="/medical-records?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#14b8a6,#2dd4bf)"><i data-lucide="clipboard-plus"></i></span>
+                  <div><strong>Medical Records</strong><small>Track animal health</small></div>
+                </a>
+              </div>
+              <div class="mega-col">
+                <h4 class="mega-col-title"><i data-lucide="book-open"></i> Learn</h4>
+                <a href="/care-guide?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#6366f1,#818cf8)"><i data-lucide="book-heart"></i></span>
+                  <div><strong>Care Guide</strong><small>Animal care tips</small></div>
+                </a>
+                <a href="/education?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)"><i data-lucide="graduation-cap"></i></span>
+                  <div><strong>Education Hub</strong><small>Courses &amp; awareness</small></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Community Dropdown -->
+        <li class="nav-dropdown">
+          <a href="#" class="nav-dropdown-trigger <%= ['/community','/rescue-stories'].includes(currentPath) ? 'active' : '' %>">
+            Community <i data-lucide="chevron-down" style="width:14px;height:14px;margin-left:2px;transition:transform 0.3s"></i>
+          </a>
+          <div class="mega-dropdown mega-dropdown-sm">
+            <div class="mega-dropdown-inner">
+              <div class="mega-col">
+                <a href="/community?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#f97316,#fb923c)"><i data-lucide="messages-square"></i></span>
+                  <div><strong>Community Forum</strong><small>Discuss &amp; share</small></div>
+                </a>
+                <a href="/rescue-stories?lang=<%= lang %>" class="mega-link">
+                  <span class="mega-link-icon" style="background:linear-gradient(135deg,#a855f7,#c084fc)"><i data-lucide="book-open-text"></i></span>
+                  <div><strong>Rescue Stories</strong><small>Inspiring rescues</small></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+
         <% if (admin) { %>
           <li><a href="/admin/dashboard" class="nav-admin-link">🛡️ <%= t.nav_dashboard %></a></li>
         <% } %>

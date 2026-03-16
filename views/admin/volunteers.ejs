@@ -1,0 +1,94 @@
+<%- include('../partials/header') %>
+
+<section class="admin-section">
+  <div class="container">
+    <div class="admin-nav animate-fade-up">
+      <h1 class="admin-title">🤝 Manage Volunteers</h1>
+      <div class="admin-nav-links">
+        <a href="/admin/dashboard" class="admin-tab">Dashboard</a>
+        <a href="/admin/reports" class="admin-tab">Reports</a>
+        <a href="/admin/volunteers" class="admin-tab active">Volunteers</a>
+        <a href="/admin/map" class="admin-tab">Map</a>
+        <a href="/statistics" class="admin-tab">Statistics</a>
+        <a href="/admin/logout" class="admin-tab admin-tab-logout">Logout</a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="admin-stats-grid animate-fade-up delay-100" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 2rem;">
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon total"><i data-lucide="users"></i></div>
+        <div class="admin-stat-info">
+          <div class="admin-stat-number"><%= volunteers.length %></div>
+          <div class="admin-stat-label">Total Volunteers</div>
+        </div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon rescued"><i data-lucide="check-circle"></i></div>
+        <div class="admin-stat-info">
+          <div class="admin-stat-number"><%= volunteers.filter(v => v.status === 'active').length %></div>
+          <div class="admin-stat-label">Active</div>
+        </div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon pending"><i data-lucide="clock"></i></div>
+        <div class="admin-stat-info">
+          <div class="admin-stat-number"><%= volunteers.filter(v => v.status === 'pending').length %></div>
+          <div class="admin-stat-label">Pending</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="admin-section-card animate-fade-up delay-200">
+      <div class="admin-section-header">
+        <h2>Volunteer List</h2>
+      </div>
+
+      <% if (volunteers.length === 0) { %>
+        <div class="empty-state">
+          <div class="empty-icon">🤝</div>
+          <p>No volunteers registered yet.</p>
+        </div>
+      <% } else { %>
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>City</th>
+                <th>Availability</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% volunteers.forEach(v => { %>
+                <tr>
+                  <td><strong><%= v.name %></strong><br><span class="text-muted"><%= v.email %></span></td>
+                  <td><%= v.phone %></td>
+                  <td><%= v.city %></td>
+                  <td><span class="badge badge-type"><%= v.availability %></span></td>
+                  <td><span class="badge badge-<%= v.status %>"><%= v.status %></span></td>
+                  <td>
+                    <form method="POST" action="/admin/volunteers/<%= v._id %>/status" style="display:flex;gap:0.25rem;">
+                      <select name="status" class="form-input form-input-sm" style="width:120px;">
+                        <option value="active" <%= v.status === 'active' ? 'selected' : '' %>>Active</option>
+                        <option value="inactive" <%= v.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                        <option value="pending" <%= v.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                      </select>
+                      <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

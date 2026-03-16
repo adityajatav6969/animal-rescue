@@ -69,11 +69,33 @@ const pageRoutes = require('./routes/pageRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const statisticsRoutes = require('./routes/statistics');
+const volunteerRoutes = require('./routes/volunteerRoutes');
+const emergencyRoutes = require('./routes/emergencyRoutes');
+const storiesRoutes = require('./routes/storiesRoutes');
+const adoptionRoutes = require('./routes/adoptionRoutes');
+const donationRoutes = require('./routes/donationRoutes');
+const shelterRoutes = require('./routes/shelterRoutes');
+const communityRoutes = require('./routes/communityRoutes');
+const medicalRoutes = require('./routes/medicalRoutes');
+const helplineRoutes = require('./routes/helplineRoutes');
+const educationRoutes = require('./routes/educationRoutes');
 
 app.use('/', pageRoutes);
 app.use('/', reportRoutes);
 app.use('/admin', authRoutes);
 app.use('/admin', adminRoutes);
+app.use('/', statisticsRoutes);
+app.use('/', volunteerRoutes);
+app.use('/', emergencyRoutes);
+app.use('/', storiesRoutes);
+app.use('/', adoptionRoutes);
+app.use('/', donationRoutes);
+app.use('/', shelterRoutes);
+app.use('/', communityRoutes);
+app.use('/', medicalRoutes);
+app.use('/', helplineRoutes);
+app.use('/', educationRoutes);
 
 // ── 404 Handler ─────────────────────────────
 app.use((req, res) => {

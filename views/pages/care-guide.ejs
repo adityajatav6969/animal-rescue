@@ -1,0 +1,85 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container">
+    <div class="feature-hero animate-fade-up">
+      <span class="section-tag">📘 Learn</span>
+      <h1>Animal <span class="gradient-text">Care Guide</span></h1>
+      <p>Essential information for safely helping injured or distressed animals.</p>
+    </div>
+
+    <div class="accordion animate-fade-up delay-100">
+      <div class="accordion-item open">
+        <button class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+          <span>🩹 First Aid for Injured Animals</span>
+          <i data-lucide="chevron-down"></i>
+        </button>
+        <div class="accordion-content">
+          <p>Stay calm and do not try to restrain the animal forcefully. Use a towel or cloth to gently wrap the animal. Do not give food or water to an unconscious animal. Apply gentle pressure to wounds with a clean cloth to stop bleeding. Keep the animal warm and transport it to the nearest veterinary clinic as quickly as possible.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+          <span>🐾 How to Safely Approach Stray Animals</span>
+          <i data-lucide="chevron-down"></i>
+        </button>
+        <div class="accordion-content">
+          <p>Move slowly and speak softly to avoid startling the animal. Avoid direct eye contact, as it can be perceived as threatening. Offer food from a safe distance to build trust. Never corner an animal — always leave an escape route. Crouch down to appear less intimidating. Watch for signs of aggression: bared teeth, raised fur, or growling.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+          <span>🩸 What to Do if an Animal is Bleeding</span>
+          <i data-lucide="chevron-down"></i>
+        </button>
+        <div class="accordion-content">
+          <p>Apply direct pressure to the wound using gauze or a clean cloth. Elevate the injured area if possible. Do not remove any objects embedded in the wound. If blood soaks through, add more gauze on top. For severe bleeding, apply a tourniquet only as a last resort, above the wound. Seek veterinary help immediately.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+          <span>📞 Emergency Rescue Numbers</span>
+          <i data-lucide="chevron-down"></i>
+        </button>
+        <div class="accordion-content">
+          <p><strong>Animal Welfare Board of India:</strong> 011-23357088<br>
+          <strong>SPCA (Society for Prevention of Cruelty to Animals):</strong> Local chapter number<br>
+          <strong>Wildlife SOS:</strong> +91-9917109666<br>
+          <strong>Humane Animal Society:</strong> Check local listings<br>
+          For immediate help, visit our <a href="/helpline">Helpline Directory</a>.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+          <span>🚗 How to Transport Injured Animals</span>
+          <i data-lucide="chevron-down"></i>
+        </button>
+        <div class="accordion-content">
+          <p>Use a sturdy box or crate lined with soft cloth. For larger animals, use a blanket as a stretcher. Support the animal's body gently without putting pressure on injuries. Keep the vehicle warm and drive smoothly. Avoid sudden braking or sharp turns. Talk calmly to the animal to reduce stress during transport.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-grid animate-fade-up delay-200">
+      <div class="info-card text-center">
+        <div class="info-card-icon">🏥</div>
+        <h3>Find a Vet</h3>
+        <p>Locate the nearest veterinary clinic for emergency care. Time is critical.</p>
+      </div>
+      <div class="info-card text-center">
+        <div class="info-card-icon">📱</div>
+        <h3>Call for Help</h3>
+        <p>Contact our helpline or local animal rescue services immediately.</p>
+        <a href="/helpline" class="btn btn-outline btn-sm" style="margin-top:0.75rem">View Helplines</a>
+      </div>
+      <div class="info-card text-center">
+        <div class="info-card-icon">🤝</div>
+        <h3>Volunteer</h3>
+        <p>Join our rescue network and help us save more animals every day.</p>
+        <a href="/volunteer" class="btn btn-outline btn-sm" style="margin-top:0.75rem">Register Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

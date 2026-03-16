@@ -29,4 +29,9 @@ router.get('/map', adminController.mapView);
 router.get('/api/map-data', adminController.getMapData);
 router.get('/api/stats', adminController.getStats);
 
+// Volunteer management
+const volunteerController = require('../controllers/volunteerController');
+router.get('/volunteers', volunteerController.adminVolunteers);
+router.post('/volunteers/:id/status', volunteerController.updateVolunteerStatus);
+
 module.exports = router;

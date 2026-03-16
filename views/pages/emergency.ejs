@@ -1,0 +1,92 @@
+<%- include('../partials/header') %>
+
+<section class="page-section">
+  <div class="container container-md">
+    <div class="feature-hero animate-fade-up">
+      <span class="section-tag" style="background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(239,68,68,0.05));color:#ef4444;border-color:rgba(239,68,68,0.2)">🚨 Emergency</span>
+      <h1>Emergency <span class="gradient-text">Animal Rescue</span></h1>
+      <p>Report a critically injured animal. Our rescue teams will respond immediately.</p>
+    </div>
+
+    <div class="feature-form animate-fade-up delay-200" style="border-color: rgba(239,68,68,0.2);">
+      <h2><i data-lucide="alert-triangle" style="color:#ef4444"></i> Emergency Report</h2>
+      <form method="POST" action="/emergency">
+        <div class="form-group">
+          <label class="form-label">Animal Type</label>
+          <select name="animalType" class="form-input" required>
+            <option value="">Select animal type</option>
+            <option value="dog">🐕 Dog</option>
+            <option value="cat">🐈 Cat</option>
+            <option value="cow">🐄 Cow</option>
+            <option value="bird">🐦 Bird</option>
+            <option value="other">🐾 Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Severity Level</label>
+          <div class="radio-group" style="grid-template-columns: 1fr 1fr 1fr;">
+            <label class="radio-card">
+              <input type="radio" name="severity" value="normal" />
+              <div class="radio-content">
+                <span class="radio-icon">⚠️</span>
+                <span class="radio-title">Normal</span>
+              </div>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="severity" value="urgent" checked />
+              <div class="radio-content">
+                <span class="radio-icon">🔶</span>
+                <span class="radio-title">Urgent</span>
+              </div>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="severity" value="critical" />
+              <div class="radio-content" style="border-color:#fecaca;">
+                <span class="radio-icon">🔴</span>
+                <span class="radio-title">Critical</span>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea name="description" class="form-input form-textarea" required placeholder="Describe the animal's condition and injury..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Contact Number</label>
+            <input type="tel" name="contactNumber" class="form-input" placeholder="+91 XXXXX XXXXX" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">GPS Location</label>
+            <input type="text" id="locationDisplay" class="form-input" placeholder="Click 'Detect' to get location" readonly />
+          </div>
+        </div>
+        <input type="hidden" name="latitude" id="lat" />
+        <input type="hidden" name="longitude" id="lng" />
+        <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="getLocation()">
+            <i data-lucide="map-pin"></i> Detect Location
+          </button>
+        </div>
+        <button type="submit" class="btn btn-danger btn-block btn-lg">
+          <i data-lucide="siren"></i> Submit Emergency Report
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      document.getElementById('lat').value = pos.coords.latitude;
+      document.getElementById('lng').value = pos.coords.longitude;
+      document.getElementById('locationDisplay').value = pos.coords.latitude.toFixed(5) + ', ' + pos.coords.longitude.toFixed(5);
+    }, () => alert('Unable to retrieve location.'));
+  }
+}
+</script>
+
+<%- include('../partials/footer') %>
